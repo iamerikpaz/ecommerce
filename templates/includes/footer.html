@@ -1,19 +1,77 @@
 <!-- ========================= FOOTER ========================= -->
-<footer class="section-footer border-top">
+<footer class="section-footer border-top footer-modern">
 	<div class="container">
-		<section class="footer-bottom border-top row">
-			<div class="col-md-2">
-				<p class="text-muted"> &copy ByteShop </p>
+		<section class="footer-cta">
+			<div class="footer-cta-text">
+				<h5 class="footer-cta-title">Impulsa tu centro médico con tecnología confiable</h5>
+				<p>Conecta con un especialista MediSunshine y recibe asesoría personalizada en menos de 24 horas.</p>
 			</div>
-			<div class="col-md-8 text-md-center">
-				<span  class="px-2">byteshopstore@gmail.com</span>
-				<span  class="px-2">+664-986-7233</span>
-				<span  class="px-2">Calle Chihuahua 137, Ciudad Obregon</span>
+			<div class="footer-cta-actions">
+				<span class="contact-protect contact-cta" data-contact-type="email" data-contact-token="moc.enihsnusidem@otcatnoc"></span>
+				<a class="btn btn-outline-light footer-cta-secondary" href="https://wa.me/525542402896?text=Hola%20MediSunshine,%20me%20gustaría%20recibir%20asesor%C3%ADa%20para%20mi%20centro%20m%C3%A9dico." target="_blank" rel="noopener noreferrer">
+					<i class="fab fa-whatsapp"></i> Hablar por WhatsApp
+				</a>
 			</div>
-			<div class="col-md-2 text-md-right text-muted">
-				<i class="fab fa-lg fa-cc-visa"></i>
-				<i class="fab fa-lg fa-cc-paypal"></i>
-				<i class="fab fa-lg fa-cc-mastercard"></i>
+		</section>
+
+		<section class="footer-main">
+			<div class="footer-grid">
+				<div class="footer-column footer-brand">
+					<a class="footer-logo" href="{% url 'home' %}">
+						<span>MediSunshine</span>
+					</a>
+					<p>Equipamiento médico validado por especialistas, soporte posventa y envíos en todo México.</p>
+				</div>
+
+				<div class="footer-column footer-links">
+					<h6>Explora</h6>
+					<ul>
+						<li><a href="{% url 'store' %}">Catálogo completo</a></li>
+						<li><a href="{% url 'products_by_category' 'equipos-medicos' %}">Equipos para clínicas</a></li>
+						<li><a href="{% url 'products_by_category' 'consumibles' %}">Consumibles especializados</a></li>
+						<li><a href="{% url 'search' %}">Buscar soluciones</a></li>
+					</ul>
+				</div>
+
+				<div class="footer-column footer-support">
+					<h6>Soporte</h6>
+					<ul>
+						<li><a href="{% url 'login' %}">Portal de clientes</a></li>
+						<li><a href="{% url 'register' %}">Crear una cuenta</a></li>
+						<li><a href="{% url 'forgotPassword' %}">Recuperar contraseña</a></li>
+						<li><a href="{% url 'my_orders' %}">Historial de pedidos</a></li>
+					</ul>
+				</div>
+
+				<div class="footer-column footer-contact">
+					<h6>Contacto directo</h6>
+					<ul class="footer-contact-list">
+						<li>
+							<i class="fas fa-envelope"></i>
+							<span class="contact-protect" data-contact-type="email" data-contact-token="moc.enihsnusidem@otcatnoc"></span>
+						</li>
+						<li>
+							<i class="fas fa-phone"></i>
+							<span class="contact-protect" data-contact-type="phone" data-contact-token="6982 0424 55 25+"></span>
+						</li>
+						<li>
+							<i class="fas fa-map-marker-alt"></i>
+							<span class="contact-protect" data-contact-type="address" data-contact-token="XMDC ,ocixéM ed daduiC 00430 ,zeráuJ otineB ,somalÁ ,76 zidáC"></span>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+
+		<section class="footer-bottom">
+			<div class="footer-bottom-left">
+				<p class="text-muted mb-0">&copy; MediSunshine {% now "Y" %}. Todos los derechos reservados.</p>
+			</div>
+			<div class="footer-bottom-right">
+				<span class="footer-payment">
+					<i class="fab fa-lg fa-cc-paypal"></i>
+					Pagos seguros con PayPal
+				</span>
 			</div>
 		</section>
 	</div><!-- //container -->
@@ -24,12 +82,51 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){
-					$('.thumb a').click(function(e){
-							e.preventDefault();
-							$('.mainImage img').attr('src', $(this).attr('href'));
-					});
-			});
+				$('.thumb a').click(function(e){
+						e.preventDefault();
+						$('.mainImage img').attr('src', $(this).attr('href'));
+				});
+		});
 
+</script>
+<script>
+(function(){
+  var nodes = document.querySelectorAll('[data-contact-token]');
+  nodes.forEach(function(node){
+    var token = node.getAttribute('data-contact-token');
+    if(!token){
+      return;
+    }
+    var decoded = token.split('').reverse().join('');
+    var type = node.getAttribute('data-contact-type');
+    if(type === 'email'){
+      var emailLink = document.createElement('a');
+      emailLink.href = 'mailto:' + decoded;
+      emailLink.textContent = decoded;
+      emailLink.className = 'footer-link';
+      node.appendChild(emailLink);
+    } else if(type === 'phone'){
+      var phoneLink = document.createElement('a');
+      phoneLink.href = 'tel:' + decoded.replace(/[^0-9+]/g, '');
+      phoneLink.textContent = decoded;
+      phoneLink.className = 'footer-link';
+      node.appendChild(phoneLink);
+    } else {
+      node.textContent = decoded;
+    }
+
+    if(node.classList.contains('contact-cta')){
+      var anchor = node.querySelector('a');
+      if(anchor){
+        anchor.classList.add('btn', 'btn-light', 'footer-cta-primary');
+        var icon = document.createElement('i');
+        icon.className = 'fas fa-envelope-open-text';
+        anchor.insertBefore(icon, anchor.firstChild);
+        icon.insertAdjacentText('afterend', ' ');
+      }
+    }
+  });
+})();
 </script>
 </body>
 </html>

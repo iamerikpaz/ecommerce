@@ -56,3 +56,17 @@ ul.thumb li img {
   height: 80px;
   border: 1px solid grey;
 }
+
+.bloque-confianza {
+  background: #EAF4FF; /* Azul muy suave */
+  border-radius: 12px;
+  padding: 15px 20px;
+  font-size: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  color: #333;
+}
+
+.bloque-confianza i {
+  color: #1A73E8; /* Azul profesional (Google Blue) */
+  margin-right: 8px;
+}

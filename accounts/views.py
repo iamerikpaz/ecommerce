@@ -38,7 +38,7 @@ def register(request):
 
 
             current_site = get_current_site(request)
-            mail_subject = 'Activa tu cuenta en ByteShop para continuar'
+            mail_subject = 'Activa tu cuenta en MediSunshine para continuar'
             body = render_to_string('accounts/account_verification_email.html', {
                 'user': user,
                 'domain': current_site,

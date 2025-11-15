@@ -9,27 +9,41 @@
     <div class="row">
         <aside class="col-lg-8">
     <div class="card">
-          <h5 class="card-header">Dirección de Facturación</h5>
-          <div class="card-body">
-            <p class="card-text mb-0">{{ order.full_name }}</p>
-            <p class="card-text mb-0">{{ order.full_address }}</p>
-            <p class="card-text mb-0">{{ order.country }}, {{ order.city }}, {{ order.state }}</p>
-            <p class="card-text mb-0">{{ order.email }}</p>
-            <p class="card-text mb-0">{{ order.phone }}</p>
-            {% if order.order_note %}
-                <b>Detalles de la orden: </b> {{ order.order_note }}
-            {% endif %}
-          </div>
+      <h5 class="card-header">Dirección de envio</h5>
+      <div class="card-body">
+        <p class="card-text mb-0">{{ order.full_name }}</p>
+        <p class="card-text mb-0">{{ order.full_address }}</p>
+        <p class="card-text mb-0">{{ order.city }}, {{ order.state }}</p>
+        <p class="card-text mb-0">{{ order.email }}</p>
+        <p class="card-text mb-0">{{ order.phone }}</p>
+        {% if order.order_note %}
+        <b>Detalles de la orden: </b> {{ order.order_note }}
+        {% endif %}
+      </div>
+    </div> <!-- card.// -->
+    {% if order.rfc %}
+    <div class="card mt-3">
+      <h5 class="card-header">Datos de Facturación</h5>
+      <div class="card-body">
+        <p class="card-text mb-0"><b>RFC:</b> {{ order.rfc }}</p>
+        <p class="card-text mb-0"><b>Nombre o Razón Social:</b> {{ order.razon_social }}</p>
+        <p class="card-text mb-0"><b>Régimen Fiscal:</b> {{ order.regimen_fiscal }}</p>
+        <p class="card-text mb-0"><b>Uso CFDI:</b> {{ order.uso_cfdi }}</p>
+        <p class="card-text mb-0"><b>Calle y Número:</b> {{ order.calle }}</p>
+        <p class="card-text mb-0"><b>Codigo Postal:</b> {{ order.codigo_postal }}</p>
+        <p class="card-text mb-0"><b>Colonia:</b> {{ order.colonia }}</p>
+        <p class="card-text mb-0"><b>Ciudad:</b> {{ order.ciudad }}</p>
+      </div>
+    </div>
+    {% endif %}
+    <div class="card mt-3">
+      <h5 class="card-header">Método de Pago</h5>
+      <div class="card-body">
+        <p class="card-text">Paypal</p>
+      </div>
     </div> <!-- card.// -->
 
-    <div class="card">
-          <h5 class="card-header">Método de Pago</h5>
-          <div class="card-body">
-            <p class="card-text">Paypal</p>
-          </div>
-    </div> <!-- card.// -->
-
-    <div class="card">
+    <div class="card mt-3">
           <h5 class="card-header">Revisión de Productos</h5>
           <div class="card-body">
 
@@ -88,17 +102,17 @@
 
             <div class="card">
             <div class="card-body">
-                <dl class="dlist-align">
+<!--                 <dl class="dlist-align">
                   <dt>Precio Total:</dt>
-                  <dd class="text-right">{{ total }}</dd>
-                </dl>
-                <dl class="dlist-align">
+                  <dd class="text-right">$ {{ total }}</dd>
+                </dl> -->
+<!--                 <dl class="dlist-align">
                   <dt>Impuesto IVA (16%):</dt>
-                  <dd class="text-right"> {{ tax }}</dd>
-                </dl>
+                  <dd class="text-right"> </dd>
+                </dl> -->
                 <dl class="dlist-align">
                   <dt>Total:</dt>
-                  <dd class="text-right text-dark b"><strong>{{ grand_total }}</strong></dd>
+                  <dd class="text-right text-dark b"><strong>$ {{ grand_total }}</strong></dd>
                 </dl>
                 <hr>
                 <p class="text-center mb-3">
@@ -136,7 +150,7 @@
         }
 
 
-        var amount = "{{ grand_total }}"
+        var amount = "{{ grand_total }}"; // Amount to be charged
         var url = "{% url 'payments' %}"
         var csrftoken = getCookie('csrftoken');
         var orderID = "{{ order.order_number }}"
@@ -144,14 +158,17 @@
         var redirect_url = "{% url 'order_complete' %}"
 
         paypal.Buttons({
-
+            
             createOrder: function(data, actions){
               return actions.order.create({
                   purchase_units: [{
                       amount: {
                         value: amount
                       }
-                  }]
+                  }],
+                  application_context: {
+                  shipping_preference: "NO_SHIPPING"
+                    }
               });
             },
 

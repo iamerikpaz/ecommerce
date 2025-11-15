@@ -425,6 +425,7 @@ p:last-child {
   position: relative;
   padding-top: 1rem;
   padding-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .brand-wrap .logo, .navbar-brand .logo {

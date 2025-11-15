@@ -1,0 +1,31 @@
+{% autoescape off %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Nuevo pedido</title>
+</head>
+<body>
+    <h2>Nuevo pedido recibido</h2>
+    <p><strong>Número de pedido:</strong> {{ order.order_number }}</p>
+    <p><strong>Cliente:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Teléfono:</strong> {{ order.phone }}</p>
+    <p><strong>Total:</strong> ${{ order.order_total }}</p>
+
+    <h3>Dirección de envío</h3>
+    <p>
+        {{ order.address_line_1 }} {{ order.address_line_2 }}<br>
+        {{ order.city }}, {{ order.state }}
+    </p>
+
+    {% if order.order_note %}
+        <h3>Notas del pedido</h3>
+        <p>{{ order.order_note }}</p>
+    {% endif %}
+
+    <p>Revisa el panel de administración para más detalles.</p>
+</body>
+</html>
+
+{% endautoescape %}

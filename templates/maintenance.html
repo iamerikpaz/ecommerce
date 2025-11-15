@@ -1,0 +1,124 @@
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediSunshine - En Mantenimiento</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(to bottom, #EFF6FF, #FFFFFF);
+            min-height: 100vh;
+        }
+        
+        .blue-gradient {
+            background: linear-gradient(to bottom, #EFF6FF, #FFFFFF);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .btn-primary {
+            background-color: #1D4ED8;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1E40AF;
+        }
+        
+        .social-icon {
+            color: #1D4ED8;
+            padding: 0.5rem;
+            border-radius: 9999px;
+            transition: background-color 0.2s;
+        }
+        
+        .social-icon:hover {
+            background-color: #DBEAFE;
+        }
+        
+        .input-field {
+            padding: 0.5rem 1rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 0.375rem;
+            width: 100%;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #60A5FA;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="flex min-h-screen flex-col">
+        <div class="container flex flex-1 flex-col items-center justify-center px-4 py-16 md:py-24">
+            <div class="flex items-center gap-2 mb-8">
+                <div class="relative h-10 w-10">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600">
+                        <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                    </svg>
+                </div>
+                <span class="text-2xl font-bold text-blue-700">MediSunshine</span>
+            </div>
+
+            <div class="flex flex-col items-center text-center max-w-3xl">
+                <div class="relative w-full h-64 mb-8">
+                    <img src="{% static 'images/maintenance-illustration.svg' %}" alt="Maintenance Illustration" 
+                        class="object-contain w-full h-full" style="max-width: 500px; margin: 0 auto;">
+                </div>
+
+                <h1 class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-blue-900 mb-4">
+                    Estamos Actualizando Nuestro Sistema
+                </h1>
+
+                <p class="text-xl text-gray-600 mb-8 max-w-2xl">
+                    Nuestro sitio web está temporalmente no disponible mientras realizamos mejoras para optimizar su experiencia de compra. 
+                    Pedimos disculpas por cualquier inconveniente y agradecemos su paciencia.
+                </p>
+
+                <div class="flex items-center justify-center gap-3 p-4 bg-blue-50 rounded-lg border border-blue-100 mb-8">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" 
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <p class="text-blue-800 font-medium">
+                        Estaremos de vuelta en aproximadamente <span class="font-bold">24 horas</span>
+                    </p>
+                </div>
+
+               
+            </div>
+        </div>
+
+        <footer class="w-full border-t bg-white py-6">
+            <div class="container px-4 md:px-6">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <p class="text-sm text-gray-600">© 2025 MediSunshine. Todos los derechos reservados.</p>
+                    <div class="flex items-center gap-4">
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
+
+{% endblock %}

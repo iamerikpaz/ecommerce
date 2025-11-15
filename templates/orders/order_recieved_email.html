@@ -1,10 +1,38 @@
 {% autoescape off %}
-
-Estimado/a {{user.first_name}},
-
-Gracias por realizar tu compra en ByteShop!
-Hemos recibido tu orden {{ order.order_number }}
-
-Para obtener ayuda adicional, visite nuestro Centro de soporte.
-Este es un mensaje automático, por favor, no respondas.
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="utf-8">
+	<title>Confirmación de pedido</title>
+	<style>
+		body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; margin: 0; padding: 0; background: #f5f7fb; color: #0f172a; }
+		.email-wrapper { max-width: 640px; margin: 0 auto; padding: 32px 20px; }
+		.email-card { background: #ffffff; border-radius: 16px; padding: 32px; box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12); }
+		.email-header { text-align: center; }
+		.email-header h1 { margin: 0; font-size: 24px; color: #1d4ed8; }
+		.email-body { margin-top: 24px; line-height: 1.6; }
+		.order-code { display: inline-block; margin: 16px 0; padding: 12px 18px; background: #eef2ff; border-radius: 12px; font-weight: 600; color: #1d4ed8; letter-spacing: 0.05em; }
+		.email-footer { margin-top: 32px; font-size: 14px; color: #475569; }
+		a { color: #1d4ed8; text-decoration: none; }
+	</style>
+</head>
+<body>
+	<div class="email-wrapper">
+		<div class="email-card">
+			<div class="email-header">
+				<h1>¡Gracias por tu compra, {{ user.first_name }}!</h1>
+				<span class="order-code">Pedido #{{ order.order_number }}</span>
+			</div>
+			<div class="email-body">
+				<p>Hemos recibido tu orden y ya estamos preparando el envío.</p>
+				<p>Si necesitas ayuda, contáctanos en cualquier momento a través de nuestro WhatsApp o responde desde tu panel de cliente.</p>
+			</div>
+			<div class="email-footer">
+				<p>Este mensaje es automático. Si tienes dudas, escríbenos a través de <a href="https://wa.me/525542402896" target="_blank" rel="noopener">WhatsApp</a>.</p>
+				<p>Equipo MediSunshine</p>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
 {% endautoescape %}

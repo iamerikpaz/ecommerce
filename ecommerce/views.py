@@ -14,3 +14,10 @@ def home(request):
     }
 
     return render(request, 'home.html', context)
+
+def maintenance_page(request):
+    """
+    View to render the maintenance page.
+    """
+    return render(request, 'maintenance.html')
+

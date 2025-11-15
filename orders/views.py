@@ -7,12 +7,13 @@ from .models import Order, Payment, OrderProduct
 import json
 from store.models import Product
 from django.core.mail import EmailMessage
+from django.core.exceptions import ValidationError
 from django.template.loader import render_to_string
 
 
 def payments(request):
     body = json.loads(request.body)
-    order = Order.objects.get(user=request.user, is_ordered=False, order_number=body['orderID'])
+    order = Order.objects.get(is_ordered=False, order_number=body['orderID'])
 
     payment = Payment(
         user = request.user,
@@ -61,6 +62,18 @@ def payments(request):
     to_email = request.user.email
     send_email = EmailMessage(mail_subject, body, to=[to_email])
     send_email.send()
+    
+        # --- Email interno a ventas ---
+    sales_subject = f'Nuevo pedido #{order.order_number}'
+    sales_body = render_to_string('orders/order_notification_email.html', {
+        'user': request.user,
+        'order': order,
+    })
+    sales_email = "ventas@medisunshine.com"  
+    notify_email = EmailMessage(sales_subject, sales_body, to=[sales_email])
+    notify_email.send()
+    # --- fin email ventas ---
+
 
     data = {
         'order_number': order.order_number,
@@ -77,6 +90,8 @@ def place_order(request, total=0, quantity=0):
     cart_items = CartItem.objects.filter(user=current_user)
     cart_count = cart_items.count()
 
+    print("Step1")  # Debugging line
+        
     if cart_count <= 0:
         return redirect('store')
 
@@ -87,8 +102,15 @@ def place_order(request, total=0, quantity=0):
         total += (cart_item.product.price * cart_item.quantity)
         quantity += cart_item.quantity
 
-    tax = round((16/100) * total, 2)
-    grand_total = total + tax
+    #tax = round((16/100) * total, 2)
+    #grand_total = total + tax
+    grand_total = total
+    # Tasa de IVA (16%)
+    iva_rate = 0.16
+    # Calcular el monto de IVA incluido en el precio
+    iva_amount = (grand_total * iva_rate) / (1 + iva_rate)
+
+    tax = 0  # Assuming no tax for simplicity, adjust as needed
 
 
     if request.method == 'POST':
@@ -100,13 +122,29 @@ def place_order(request, total=0, quantity=0):
             data.first_name = form.cleaned_data['first_name']
             data.last_name = form.cleaned_data['last_name']
             data.phone = form.cleaned_data['phone']
-            data.email = form.cleaned_data['email']
+            data.email = request.user.email #form.cleaned_data['email']
             data.address_line_1 = form.cleaned_data['address_line_1']
             data.address_line_2 = form.cleaned_data['address_line_2']
-            data.country = form.cleaned_data['country']
             data.city = form.cleaned_data['city']
             data.state = form.cleaned_data['state']
             data.order_note = form.cleaned_data['order_note']
+            # Handle facturación fields
+            quiere_factura = request.POST.get('quiere_factura') == 'on'
+            if quiere_factura:
+                data.quiere_factura = True
+                data.rfc = request.POST.get('rfc')
+                data.razon_social = request.POST.get('razon_social')
+                data.regimen_fiscal = request.POST.get('regimen_fiscal')
+                data.uso_cfdi = request.POST.get('uso_cfdi')
+                data.calle = request.POST.get('calle') 
+                data.colonia = request.POST.get('colonia') 
+                data.ciudad = request.POST.get('ciudad') 
+                data.codigo_postal = request.POST.get('codigo_postal') 
+
+
+            else:
+                data.quiere_factura = False
+
             data.order_total = grand_total
             data.tax = tax
             data.ip = request.META.get('REMOTE_ADDR')
@@ -131,10 +169,19 @@ def place_order(request, total=0, quantity=0):
             }
 
             return render(request, 'orders/payments.html', context)
-
+        else:
+            # 🛠 Form is invalid, re-render checkout page with error messages
+            print("❌ Errores del formulario:", form.errors)
+            return render(request, 'store/checkout.html', {
+                'form': form,
+                'cart_items': cart_items,
+                'total': total,
+                'tax': tax,
+                'grand_total': grand_total,
+            })
     else:
+        print("❌ Errores del formulario:")
         return redirect('checkout')
-
 
 
 def order_complete(request):
@@ -164,3 +211,5 @@ def order_complete(request):
 
     except(Payment.DoesNotExist, Order.DoesNotExist):
         return redirect('home')
+
+

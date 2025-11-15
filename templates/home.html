@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block content %}
 <!-- ========================= SECTION MAIN ========================= -->
-<section class="section-intro padding-y-sm">
+<section class="section-intro padding-y-sm" style="background-color: #e2eefe;">
 <div class="container">
 
 <div class="intro-banner-wrap">
-	<img src="{% static 'images/banners/blackfriday.png' %}" class="img-fluid rounded">
+	<img src="{% static 'images/banners/BannerMediSunshinePLAINBG.png' %}" class="img-fluid rounded">
 </div>
 
 </div> <!-- container //  -->
@@ -24,32 +25,42 @@
 </header><!-- sect-heading -->
 
 
-<div class="row">
+<div class="home-product-grid">
 
 	{% for product in products %}
-	<div class="col-md-3">
-		<div class="card card-product-grid">
-			<a href="{{ product.get_url }}" class="img-wrap"> <img src="{{ product.images.url }}"> </a>
-			<figcaption class="info-wrap">
-				<a href="{{ product.get_url }}" class="title">{{product.product_name}}</a>
-				<div class="price mt-1">{{ product.price }}</div> <!-- price-wrap.// -->
-
-				<div class="rating-star">
-					<span>
-						<i class="fa fa-star{% if product.averageReview < 0.5 %}-o{% elif product.averageReview >= 0.5 and product.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
-						<i class="fa fa-star{% if product.averageReview < 1.5 %}-o{% elif product.averageReview >= 1.5 and product.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
-						<i class="fa fa-star{% if product.averageReview < 2.5 %}-o{% elif product.averageReview >= 2.5 and product.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
-						<i class="fa fa-star{% if product.averageReview < 3.5 %}-o{% elif product.averageReview >= 3.5 and product.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
-						<i class="fa fa-star{% if product.averageReview < 4.5 %}-o{% elif product.averageReview >= 4.5 and product.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
-					</span>
-				</div>
-
-			</figcaption>
+	<article class="home-product-card">
+		<a href="{{ product.get_url }}" class="home-product-image">
+			<img src="{{ product.images.url }}" alt="{{ product.product_name }}">
+		</a>
+		<div class="home-product-info">
+			<a href="{{ product.get_url }}" class="home-product-title">{{ product.product_name }}</a>
+			<div class="home-product-price">
+				{% if product.price > 0 %}
+				$ {{ product.price|intcomma }}
+				{% else %}
+				<span class="home-product-price-quote">Bajo Cotización</span>
+				{% endif %}
+			</div>
+			<div class="home-product-rating rating-star">
+				<span>
+					<i class="fa fa-star{% if product.averageReview < 0.5 %}-o{% elif product.averageReview >= 0.5 and product.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
+					<i class="fa fa-star{% if product.averageReview < 1.5 %}-o{% elif product.averageReview >= 1.5 and product.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
+					<i class="fa fa-star{% if product.averageReview < 2.5 %}-o{% elif product.averageReview >= 2.5 and product.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
+					<i class="fa fa-star{% if product.averageReview < 3.5 %}-o{% elif product.averageReview >= 3.5 and product.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
+					<i class="fa fa-star{% if product.averageReview < 4.5 %}-o{% elif product.averageReview >= 4.5 and product.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
+				</span>
+			</div>
 		</div>
-	</div> <!-- col.// -->
+	</article>
 	{% endfor %}
 </div>
 </div><!-- container // -->
+<a href="https://wa.me/525542402896?text=Hola MediSunshine, "
+   class="whatsapp-float"
+   target="_blank"
+   rel="noopener noreferrer">
+  <i class="fab fa-whatsapp"></i>
+</a>
 </section>
 <!-- ========================= SECTION  END// ========================= -->
 

@@ -17,16 +17,47 @@ from decouple import config
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 
+SECRET_KEY = config('SECRET_KEY')
+
+# Configuración básica para usar Gmail como servidor SMTP
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.hostinger.com'  # O el servidor SMTP que uses
+EMAIL_PORT = 465  # Para TLS, o 465 para SSL
+EMAIL_USE_TLS = False  # Cambiar a False si usas SSL
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')  # Tu correo de Gmail
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')  # La contraseña de tu correo o una contraseña de aplicación
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')  # El correo que se mostrará como remitente por defecto
+PAYPAL_CLIENT_ID = config('PAYPAL_CLIENT_ID')
+#PAYPAL_CLIENT_SECRET = config('PAYPAL_CLIENT_SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['medisunshine.com', 'www.medisunshine.com']
 
 
 # Application definition
@@ -43,6 +74,7 @@ INSTALLED_APPS = [
     'store',
     'carts',
     'orders',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [
@@ -54,12 +86,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_session_timeout.middleware.SessionTimeoutMiddleware',
+    'ecommerce.middleware.MaintenanceModeMiddleware',
 ]
 
 
 SESSION_EXPIRE_SECONDS = 1800
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
-SESSION_TIMEOUT_REDIRECT = 'accounts/login'
+SESSION_TIMEOUT_REDIRECT = '/'
 
 ROOT_URLCONF = 'ecommerce.urls'
 
@@ -76,10 +109,23 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'category.context_processors.menu_links',
                 'carts.context_processors.counter',
+                'ecommerce.context_processors.paypal_credentials',
             ],
         },
     },
 ]
+
+# Add this to your settings.py file
+
+# Set to True to enable maintenance mode
+MAINTENANCE_MODE = False
+SECURE_SSL_REDIRECT = True
+SECURE_CROSS_ORIGIN_OPENER_POLICY = "same-origin-allow-popups"
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# If you want to use a different template for maintenance mode
+MAINTENANCE_TEMPLATE = 'maintenance.html'
 
 WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
@@ -153,3 +199,4 @@ MESSAGE_TAGS = {
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+

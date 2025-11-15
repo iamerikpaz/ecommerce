@@ -34,10 +34,22 @@ class Order(models.Model):
     email = models.CharField(max_length=50)
     address_line_1 = models.CharField(max_length=100)
     address_line_2 = models.CharField(max_length=100)
-    country = models.CharField(max_length=50)  # Agregado mio
+    #country = models.CharField(max_length=50)  # Agregado mio
     city = models.CharField(max_length=50)  # Agregado mio
     state = models.CharField(max_length=5)  # QUE ES CODIGO POSTAL EN CHECKOUT.HTML
     order_note = models.CharField(max_length=100, blank=True)
+    # Facturación (new)
+    quiere_factura = models.BooleanField(default=False)
+    rfc = models.CharField("RFC", max_length=14, blank=True, null=True)
+    razon_social = models.CharField("Nombre o Razón Social", max_length=255, blank=True, null=True)
+    regimen_fiscal = models.CharField("Régimen Fiscal", max_length=100, blank=True, null=True)
+    uso_cfdi = models.CharField("Uso CFDI", max_length=100, blank=True, null=True)
+    calle = models.CharField(max_length=100, blank=True, null=True)
+    colonia = models.CharField(max_length=100, blank=True, null=True)
+    ciudad = models.CharField(max_length=100, blank=True, null=True)
+    codigo_postal = models.CharField(max_length=10, blank=True, null=True)
+
+
     order_total = models.FloatField()
     tax = models.FloatField()
     status = models.CharField(max_length=50, choices=STATUS, default='New')

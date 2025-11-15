@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{% load humanize %}
 {% block content %}
 <!-- ========================= SECTION PAGETOP ========================= -->
 <section class="section-pagetop bg">
@@ -37,7 +38,7 @@
 
               </div> <!-- card-body.// -->
             </div>
-          </article> <!-- filter-group  .// -->
+          <!-- </article> 
           <article class="filter-group">
             <header class="card-header">
               <a href="#" data-toggle="collapse" data-target="#collapse_4" aria-expanded="true" class="">
@@ -66,9 +67,9 @@
                   <input type="checkbox">
                   <span class="btn btn-light"> XXL </span>
                 </label>
-              </div><!-- card-body.// -->
+              </div>
             </div>
-          </article> <!-- filter-group .// -->
+          </article> --> 
 
           <article class="filter-group">
             <header class="card-header">
@@ -139,10 +140,24 @@
                 <div class="fix-height">
                   <a href="{{ product.get_url }}" class="title">{{product.product_name}}</a>
                   <div class="price-wrap mt-2">
-                    <span class="price">{{ product.price }}</span>
+                    <span class="price">
+                      {% if product.price > 0 %}
+                      $ {{ product.price|intcomma }}
+                      {% else %}
+                      <var>Bajo Cotización</var>
+                      {% endif %}
+                    </span>
                   </div> <!-- price-wrap.// -->
                 </div>
+                {% if product.price > 0 %}
                 <a href="{% url 'add_cart' product.id %}" class="btn btn-block btn-success">Agregar al Carrito </a>
+                {% else %}
+                  <a href="https://wa.me/525542402896?text=Hola, estoy interesado en el producto: {{ product_name }}. ¿Podrías darme más información?"
+                  class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+                  <span class="text">Solicitar Cotización</span>
+                  <i class="fab fa-whatsapp" style="color: white;"></i>
+                </a>
+                {% endif %}
               </figcaption>
             </figure>
           </div> <!-- col.// -->
